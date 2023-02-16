@@ -1,16 +1,14 @@
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor  # для запуска бота
 import logging
 import decouple
 from decouple import config
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
-
-TOKEN = config('TOKEN')
+TOKEN='6226973447:AAFdY9l51fisGvXGr5gzs5gKt0uqzgES4O8'
 
 bot = Bot(TOKEN)
 db = Dispatcher(bot=bot)
+
 
 
 @db.message_handler(commands=['start', 'hello'])
@@ -20,11 +18,12 @@ async def start_handler(massage: types.Message):
     await massage.reply(massage.from_user.first_name)
 
 
-@db.message_handler(commands=['quiz'])
-async def quiz1(massage: types.Message):
+@db.message_handler(commands=['button'])
+async def   quiz1(massage: types.Message):
     markup = InlineKeyboardMarkup()
-    button = InlineKeyboardButton('NEXT', callback_data='button')
+    button = InlineKeyboardButton('next', callback_data='button')
     markup.add(button)
+
 
     ques = 'кто ты воин?'
     answer = [
@@ -32,8 +31,7 @@ async def quiz1(massage: types.Message):
         'томас шелби из семьи острые козырьки',
         'спанч боб:квадратные штаны',
         'Ахилес! Сын пелея ',
-        'диктор канала "Мастерская настроения"',
-        'оптимус прайм последний прайм'
+
     ]
 
     await bot.send_poll(
@@ -49,47 +47,42 @@ async def quiz1(massage: types.Message):
     )
 
 
-@db.message_handler(commands=['button'])
-async def button(call: types.CallbackQuery):
+@db.callback_query_handler(text='button')
+async def quiz2(call: types.CallbackQuery):
     markup = InlineKeyboardMarkup()
-    button2 = InlineKeyboardButton('NEXT', callback_data='button2')
-    markup.add(button2)
-    ques = 'что это?'
+    button = InlineKeyboardButton('next', callback_data='button2')
+    markup.add(button)
+    ques = 'куда?'
     answer = [
-        'Бетмен-рыцарь ночи',
-        'томас шелби из семьи острые козырьки',
-        'спанч боб:квадратные штаны',
-        'Ахилес! Сын пелея ',
-        'диктор канала "Мастерская настроения"',
-        'оптимус прайм последний прайм'
+        'Судная ночь',
+        'Фильм Ававта 2',
+        'Уроки Бекболота ',
+        'Тик-ток'
     ]
     photo = open('media/mem.jpg', 'rb')
     await bot.send_photo(call.from_user.id, photo=photo)
-
     await bot.send_poll(
         chat_id=call.from_user.id,
         question=ques,
         options=answer,
         is_anonymous=False,
         type='quiz',
-        correct_option_id=0,
-        explanation='это бетмен ты угадал',
-        open_period=15,
-
+        correct_option_id=3,
+        explanation='Тик-ток',
+        open_period=30,
+        reply_markup=markup
     )
 
+@db.callback_query_handler(text='button2')
 async def quiz3(call: types.CallbackQuery):
-    markup = InlineKeyboardMarkup()
-    lde = InlineKeyboardButton('NEXT', callback_data='lde')
-    markup.add(lde)
-    ques = 'какое это авто?'
     answer = [
         'BMW',
         'Volcvagen',
-        'Mercedes_bens',
-        'Audi',
-        'нету правельного ответа'
+        'Жигули',
+        'нету правельного ответа',
+
     ]
+    ques = 'Какое это Авто?'
     photo = open('media/mem2.jpg', 'rb')
     await bot.send_photo(call.from_user.id, photo=photo)
     await bot.send_poll(
@@ -98,12 +91,9 @@ async def quiz3(call: types.CallbackQuery):
         options=answer,
         is_anonymous=False,
         type='quiz',
-        correct_option_id=4,
-        explanation='это бетмен ты угадал',
-        open_period=15,
-
-    )
-
+        correct_option_id=3,
+        explanation='нету правельного ответа!',
+        open_period=30)
 
 
 @db.message_handler()
