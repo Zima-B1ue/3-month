@@ -1,12 +1,9 @@
-from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
-import logging
-import decouple
+from aiogram import Dispatcher,Bot
 from decouple import config
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
 
 TOKEN = config('TOKEN')
+# TOKEN='6226973447:AAFdY9l51fisGvXGr5gzs5gKt0uqzgES4O8'
 
 bot = Bot(TOKEN)
 db = Dispatcher(bot=bot)
+

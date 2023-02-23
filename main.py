@@ -18,12 +18,11 @@ async def start_handler(massage: types.Message):
     await massage.reply(massage.from_user.first_name)
 
 
-@db.message_handler(commands=['button'])
+@db.message_handler(commands=['quiz'])
 async def   quiz1(massage: types.Message):
     markup = InlineKeyboardMarkup()
     button = InlineKeyboardButton('next', callback_data='button')
     markup.add(button)
-
 
     ques = 'кто ты воин?'
     answer = [
@@ -31,9 +30,10 @@ async def   quiz1(massage: types.Message):
         'томас шелби из семьи острые козырьки',
         'спанч боб:квадратные штаны',
         'Ахилес! Сын пелея ',
-
+        'диктор канала "Мастерская настроения"',
+        'оптимус прайм последний прайм'
     ]
-
+    # await massage.answer_poll()
     await bot.send_poll(
         chat_id=massage.from_user.id,
         question=ques,
@@ -67,8 +67,8 @@ async def quiz2(call: types.CallbackQuery):
         options=answer,
         is_anonymous=False,
         type='quiz',
-        correct_option_id=3,
-        explanation='Тик-ток',
+        correct_option_id=0,
+        explanation='это бетмен ты угадал',
         open_period=30,
         reply_markup=markup
     )
@@ -76,13 +76,13 @@ async def quiz2(call: types.CallbackQuery):
 @db.callback_query_handler(text='button2')
 async def quiz3(call: types.CallbackQuery):
     answer = [
-        'BMW',
-        'Volcvagen',
-        'Жигули',
-        'нету правельного ответа',
+        'повар спрашивает повара',
+        'coffin dance',
+        'дережабль, ага',
+        'я футбольный мячик',
 
     ]
-    ques = 'Какое это Авто?'
+    ques = 'откуда мем?'
     photo = open('media/mem2.jpg', 'rb')
     await bot.send_photo(call.from_user.id, photo=photo)
     await bot.send_poll(
@@ -91,8 +91,8 @@ async def quiz3(call: types.CallbackQuery):
         options=answer,
         is_anonymous=False,
         type='quiz',
-        correct_option_id=3,
-        explanation='нету правельного ответа!',
+        correct_option_id=1,
+        explanation='это coffing dance ты угадал!',
         open_period=30)
 
 
